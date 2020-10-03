@@ -24,3 +24,8 @@
       docker container ls
 10. To enter inside the container
       docker exec -it <containerId> /bin/sh
+
+
+
+NOTE - Mongodb can be run in a separate container instead of running on atlas cloud. This multi container service is implemented in this repository - https://github.com/kanikadawar5/youtube-videos-service-docker-compose
+      IMPORTANT : Databases should not be run in a container, because the container is not persistent
