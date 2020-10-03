@@ -7,6 +7,7 @@ from googleapiclient.discovery import build
 # page, per_page, offset = get_page_items()
 from bson.json_util import dumps
 
+
 class DbManager:
 
     def createIndexes(self):
@@ -18,7 +19,9 @@ class DbManager:
         # mongo_client = "mongodb://localhost:27017/"
         # db_name = "db"
         # collection_name = "users"
-        self.client = MongoClient("mongodb+srv://kanikadawar5:9911112460@cluster0.aubc2.gcp.mongodb.net/youtube?retryWrites=true&w=majority", ssl_cert_reqs=ssl.CERT_NONE)
+        self.client = MongoClient(
+            "mongodb+srv://kanikadawar5:9911112460@cluster0.aubc2.gcp.mongodb.net/youtube?retryWrites=true&w=majority",
+            ssl_cert_reqs=ssl.CERT_NONE)
         self.db = self.client.youtube
         self.collection = self.db.videos
         self.DEVELOPER_KEY = 'AIzaSyAcZ2kQyUI1cf_xG7WKAiJYdJD0Se0FC8c'
@@ -30,9 +33,9 @@ class DbManager:
     def __str__(self):
         return "DB[db= %s collection %s ]" % (self.db, self.collection)
 
-    def fetch(self, page_size, limit):
-        skips = limit * (page_size - 1)
-        return dumps(self.collection.find().sort([("publishedAt",-1)]).skip(skips).limit(limit))
+    def fetch(self, page_num, limit):
+        skips = limit * (page_num - 1)
+        return dumps(self.collection.find().sort([("publishedAt", -1)]).skip(skips).limit(limit))
 
     def insert(self, objects):
         try:
@@ -69,7 +72,6 @@ class DbManager:
 
         videos = []
 
-
         for search_result in search_response.get('items', []):
             if search_result['id']['kind'] == 'youtube#video':
                 data = {}
@@ -84,6 +86,5 @@ class DbManager:
         return videos
 
     def fetch_and_save_videos_from_youtube(self, search_query):
-
         videos = self.fetch_videos_from_youtube(search_query)
         self.insert(videos)

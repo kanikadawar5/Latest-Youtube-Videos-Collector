@@ -19,9 +19,9 @@ def dashboard_home():
 @app.route('/get_videos', methods=['GET'])
 def get_videos():
     db_manager = DbManager()
-    page_size = request.args.get('page_size', 1, type=int)
+    page_num = request.args.get('page_num', 1, type=int)
     limit = request.args.get('limits', 5, type=int)
-    data = db_manager.fetch(page_size, limit)
+    data = db_manager.fetch(page_num, limit)
     return Response(status=200, response=data)
 
 
@@ -48,7 +48,8 @@ def load_data_in_bg():
 
 
 if __name__ == '__main__':
-    # pool = ThreadPoolExecutor(1)
-    # pool.submit(load_data_in_bg)
+    # Creating a new thread and loading the videos in the database by hitting the youtube APIs
+    pool = ThreadPoolExecutor(1)
+    pool.submit(load_data_in_bg)
 
     app.run(host='0.0.0.0')

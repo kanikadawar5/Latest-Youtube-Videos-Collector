@@ -8,8 +8,8 @@
       Python3 app.py
 5. Hit APIs, where APIs are 
       i. Search Query -  curl -XGET "127.0.0.1:5000/search?query=ipl"  -v
-      ii. Get Query -    curl -XGET "127.0.0.1:5000/get_videos?page_size=1&limit=10"
-          NOTE : page_size is the page number for pagination and
+      ii. Get Query -    curl -XGET "127.0.0.1:5000/get_videos?page_num=1&limit=10"
+          NOTE : page_num is the page number for pagination and
                  limit is the number of results on a single page
 
 
@@ -18,5 +18,9 @@
       docker build -t youtube-videos-docker .
 7. Creates a container from a given image
       docker run -p 5000:5000 youtube-videos-docker:latest
-8. Run a new command in a running container
-      docker exec -it <container_name> /bin/sh
+8. To view the docker image
+      docker images
+9. To list the containers
+      docker container ls
+10. To enter inside the container
+      docker exec -it <containerId> /bin/sh
