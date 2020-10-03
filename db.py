@@ -36,12 +36,9 @@ class DbManager:
 
     def insert(self, objects):
         try:
-            print("1")
             self.collection.insert_many(objects)
-            print("2")
         except pymongo.errors.BulkWriteError as e:
-            print("aa")
-
+            print("bulk insert error", str(e.message))
 
     def search(self, query):
         cursor = self.collection.find({"$text": {"$search": query}})
@@ -61,7 +58,6 @@ class DbManager:
     def fetch_videos_from_youtube(self, search_query):
         youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
                         developerKey=self.DEVELOPER_KEY)
-        print("hey", youtube)
 
         search_response = youtube.search().list(
             q=search_query,
@@ -73,7 +69,7 @@ class DbManager:
 
         videos = []
 
-        print("hey", str(len(search_response)))
+
         for search_result in search_response.get('items', []):
             if search_result['id']['kind'] == 'youtube#video':
                 data = {}
@@ -85,7 +81,6 @@ class DbManager:
 
                 videos.append(data)
 
-        print("videos are " + str(videos))
         return videos
 
     def fetch_and_save_videos_from_youtube(self, search_query):

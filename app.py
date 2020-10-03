@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 SEARCH_QUERY_CRICKET = 'news'
 
+
 @app.route('/')
 def dashboard_home():
     return render_template('index.html')
@@ -21,7 +22,6 @@ def get_videos():
     page_size = request.args.get('page_size', 1, type=int)
     limit = request.args.get('limits', 5, type=int)
     data = db_manager.fetch(page_size, limit)
-    print(data)
     return Response(status=200, response=data)
 
 
@@ -42,15 +42,12 @@ def search_videos():
 
 def load_data_in_bg():
     db_manager = DbManager()
-    print("connected")
     while True:
-        print("i am here")
         db_manager.fetch_and_save_videos_from_youtube(SEARCH_QUERY_CRICKET)
         time.sleep(5)
 
 
 if __name__ == '__main__':
-
     # pool = ThreadPoolExecutor(1)
     # pool.submit(load_data_in_bg)
 
